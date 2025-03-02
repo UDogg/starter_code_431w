@@ -1,33 +1,54 @@
 # Nittany University Hospital Web Portal
 
 ## Overview
-This project is a web portal built with Python, Flask, and SQLite that allows hospital staff to add and delete patient records. The application demonstrates front-end and back-end integration along with several enhanced features, including:
+This project is a web portal built with Python, Flask, and SQLite that allows hospital staff to add and delete patient records. The application demonstrates front-end (modest html) and back-end integration along with several enhanced features, including:
 - **Soft Deletion:** Instead of permanently removing records, patients are marked as inactive.
 - **Preservation of Original PIDs:** When a patient is deleted and later re-added, the original PID is reused.
 - **Clear Table Feature:** A "Clear Table" button allows marking all patients as inactive.
 - **Extra Credit – Bootstrap Integration:** Even though I love GSAP much more than Bootstrap, I decided to use it in this particular assignment. The user interface is enhanced using Bootstrap via CDN links for styling and modals, providing a modern look-and-feel with interactive components.
-- **Extra Credit - Dropdown Menu:** Even though I never used it while testing I implemented a dropdown menu just because for some reason, it is regarded as a complex html feature.
+
+### What is Soft Deletion?
+Instead of permanently deleting records, patients are marked inactive. When a patient is re-added, their original PID is retained. This is also like a history feature to retrieve a record of a patients existence even after they are deleted.
+
+### Why Soft Deletion?
+WHen I was testing my app, I found that when I delete a record and readded it, that record was given a new pid and the original pid was unusable/unreachable. This is highly inefficient at scale, so I decided to mark them as inactive so if they choose to register again, they will not have to jump through hoops to get registered again. Similar to pause membership plans. It will exist as a feature as long as database.db is not deleted after initial db population.
+
+- **Extra Credit - Dropdown Menu:** Even though I never used it while testing I implemented a dropdown menu just because for some reason, it is regarded as a complex html feature. This is on the landing page at path [localhost:5000/](http://localhost:5000/)
 
 ## Features
-- **Add Patient Page:**
+- **Add Patient Endpoint:**
   - Adds a new patient unless a duplicate active entry exists.
   - If a patient was previously deleted (marked inactive), reactivation occurs without assigning a new PID.
   - Displays an error alert (Bootstrap alert component) if a duplicate is detected.
   
-- **Delete Patient Page:**
+- **Delete Patient Endpoint:**
   - Deletes (soft deletes) a patient by marking the record inactive.
   - Displays an error alert if the patient does not exist.
   - Includes a "Clear Table" button that marks all patients inactive and shows a success alert.
   
 - **Bootstrap Integration:**
   - **CDN Links:** All HTML templates (e.g., `index.html`, `add.html`, and `delete.html`) load Bootstrap CSS and JavaScript via CDN.
-  - **Modals:** Confirmation dialogs for adding and deleting patients are implemented using Bootstrap modals.
-  - **Buttons and Alerts:** Bootstrap classes (e.g., `btn`, `alert`) are used to style buttons, alerts, and overall layout.
+  - **Modals:** Confirmation dialogs for adding and deleting patients are implemented using Bootstrap modals. I think it was a nice touch.
+  - **Buttons and Alerts:** Bootstrap classes (e.g., `btn`, `alert`) are used to style buttons, alerts, and overall layout. My favorite style in buttons is the enlarge on hover which I always use in any personal project because it adds a layer of interactibility.
 
 
 ## How to Run the Project
-1. **Set Up Environment:**
+0. Unzip the downloaded file, by clicking extract, double clicking the zipped file on MacOS or using the terminal in Linux
+  - I think that graduate TAs know how to unzip files.
+1. **Double click on Pycharm icon to open the .app or .exe file**
+  - In the project side tab, click on Open with an icon that resembles the folder
+  - Navigate to the directory where ```Choudhary_UC_WPE``` was extracted
+  - On the bottom right of the screen, the 4th icon from the top is the terminal, click on it.
+  - Follow the instructions in the next section
+
+
+2. **Set Up Environment:**
    - Ensure Python is installed.
+   - Check by running 
+      ```bash
+      python --version
+      ```
+      in the terminal or powershell
    - Create a virtual environment and activate it:
      ```bash
      # For MacOS
@@ -37,22 +58,26 @@ This project is a web portal built with Python, Flask, and SQLite that allows ho
      # Setting up a virtual environment
      python -m venv venv
      source venv/bin/activate  
-
-     # On Windows: venv\Scripts\activate
+    
+     # On Windows: 
      ```
-   - Install Flask:
+     ```bash
+      venv\Scripts\activate
+      # This may not be required for some Windows Computers
+     ```
+   - In the virtual environment (if required), install Flask:
      ```bash
      pip install flask
      ```
 
-2. **Run the Application:**
+3. **Run the Application:**
    - From the project root, start the Flask server:
      ```bash
      python app.py
      ```
-   - The server will start at `http://127.0.0.1:5000/`.
+   - The server will start at `http://127.0.0.1:5000/` as specified in app.py.
 
-3. **Usage:**
+4. **Usage:**
    - **Add Patient:** Navigate to the add page, enter a patient's first and last name, and confirm via the Bootstrap modal.  
    - **Delete Patient:** Navigate to the delete page, enter a patient's name to soft-delete them, or use the "Clear Table" button to mark all active patients inactive.
 
@@ -93,6 +118,8 @@ The ```delete``` page (delete.html) includes a Bootstrap modal for confirming pa
   </div>
 </div>
 ```
+
+<mark>Note: The html templates are just forms, the core backend logic is in</mark> ```app.py```.
 
 ### Clear Table Feature in Delete Endpoint
 The "Clear Table" button is implemented on the delete page:
